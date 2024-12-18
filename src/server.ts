@@ -4,28 +4,28 @@
 
 import { AutoRouter } from 'itty-router';
 import {
+  InteractionResponseFlags,
   InteractionResponseType,
   InteractionType,
-  verifyKey,
+  verifyKey
 } from 'discord-interactions';
-import { InteractionResponseFlags } from 'discord-interactions';
 
 class JsonResponse extends Response {
-	constructor(body: unknown, init?: ResponseInit) {
-	  const jsonBody = JSON.stringify(body);
-	  init = init || {
-		headers: {
-		  'content-type': 'application/json;charset=UTF-8',
-		},
-	  };
-	  super(jsonBody, init);
-	}
+  constructor(body: unknown, init?: ResponseInit) {
+    const jsonBody = JSON.stringify(body);
+    init = init || {
+      headers: {
+        'content-type': 'application/json;charset=UTF-8'
+      }
+    };
+    super(jsonBody, init);
+  }
 }
 
 const router = AutoRouter();
 
 /**
- * A simple :wave: hello page to verify the worker is working.
+ * A simple hello page to verify the worker is working.
  */
 router.get('/', () => {
   return new Response(`Hello World`);
@@ -34,7 +34,7 @@ router.get('/', () => {
 router.post('/', async (request: Request, env) => {
   const { isValid, interaction } = await server.verifyDiscordRequest(
     request,
-    env,
+    env
   );
   if (!isValid || !interaction) {
     return new Response('Bad request signature.', { status: 401 });
@@ -62,7 +62,7 @@ async function verifyDiscordRequest(request: Request, env: { DISCORD_PUBLIC_KEY:
 
 const server = {
   verifyDiscordRequest,
-  fetch: router.fetch,
+  fetch: router.fetch
 };
 
 export default server;

@@ -1,6 +1,6 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "frosty-troubleshooter"
-main = "src/index.ts"
+main = "src/server.ts"
 compatibility_date = "2024-12-16"
 
 # Workers Logs

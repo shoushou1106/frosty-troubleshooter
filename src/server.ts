@@ -27,8 +27,8 @@ const router = AutoRouter();
 /**
  * A simple :wave: hello page to verify the worker is working.
  */
-router.get('/', (request: Request, env: { DISCORD_APPLICATION_ID: string }) => {
-  return new Response(`👋 ${env.DISCORD_APPLICATION_ID}`);
+router.get('/', () => {
+  return new Response(`Hello World`);
 });
 
 router.post('/', async (request: Request, env) => {

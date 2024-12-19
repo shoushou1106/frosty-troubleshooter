@@ -1,5 +1,7 @@
 import { PING_COMMAND } from './commands';
 import process from 'node:process';
+import fetch from 'node-fetch';
+import 'dotenv/config'
 
 (async () => {
   /**

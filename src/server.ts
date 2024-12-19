@@ -8,7 +8,7 @@ import {
   InteractionType,
   verifyKey
 } from 'discord-interactions';
-import { PING_COMMAND } from './commands';
+import { PING_COMMAND, TEMPLATE_COMMAND } from './commands';
 
 class JsonResponse extends Response {
   constructor(body: unknown, init?: ResponseInit) {
@@ -56,6 +56,14 @@ router.post('/', async (request, env) => {
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
             content: "Pong!",
+          },
+        });
+      }
+      case TEMPLATE_COMMAND.name.toLowerCase(): {
+        return new JsonResponse({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "This command is currently a placeholder."
           },
         });
       }

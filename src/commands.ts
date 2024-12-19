@@ -4,6 +4,11 @@
  */
 
 export const PING_COMMAND = {
-  name: 'Ping',
-  description: 'Test the bot alive status',
+  name: 'ping',
+  description: 'Test the bot status'
+};
+
+export const TEMPLATE_COMMAND = {
+  name: 'template',
+  description: 'PLACEHOLDER, Fill in a template easier'
 };

@@ -1,4 +1,4 @@
-import { PING_COMMAND } from './commands';
+import { PING_COMMAND, TEMPLATE_COMMAND } from './commands';
 import process from 'node:process';
 import fetch from 'node-fetch';
 import 'dotenv/config'
@@ -31,7 +31,7 @@ import 'dotenv/config'
       Authorization: `Bot ${token}`,
     },
     method: 'PUT',
-    body: JSON.stringify([PING_COMMAND]), // Can add more commands here
+    body: JSON.stringify([PING_COMMAND, TEMPLATE_COMMAND]), // Can add more commands here
   });
 
   if (response.ok) {

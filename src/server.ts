@@ -63,7 +63,7 @@ router.post('/', async (request, env) => {
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: "This command is currently a placeholder."
+            content: "This command is currently just a placeholder."
           },
         });
       }

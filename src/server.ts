@@ -4,11 +4,11 @@
 
 import { AutoRouter } from 'itty-router';
 import {
-  InteractionResponseFlags,
   InteractionResponseType,
   InteractionType,
   verifyKey
 } from 'discord-interactions';
+import { PING_COMMAND } from './commands';
 
 class JsonResponse extends Response {
   constructor(body: unknown, init?: ResponseInit) {
@@ -51,26 +51,14 @@ router.post('/', async (request, env) => {
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
     // Most user commands will come as `APPLICATION_COMMAND`.
     switch (interaction.data.name.toLowerCase()) {
-      // case AWW_COMMAND.name.toLowerCase(): {
-      //   const cuteUrl = await getCuteUrl();
-      //   return new JsonResponse({
-      //     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      //     data: {
-      //       content: cuteUrl,
-      //     },
-      //   });
-      // }
-      // case INVITE_COMMAND.name.toLowerCase(): {
-      //   const applicationId = env.DISCORD_APPLICATION_ID;
-      //   const INVITE_URL = `https://discord.com/oauth2/authorize?client_id=${applicationId}&scope=applications.commands`;
-      //   return new JsonResponse({
-      //     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      //     data: {
-      //       content: INVITE_URL,
-      //       flags: InteractionResponseFlags.EPHEMERAL,
-      //     },
-      //   });
-      // }
+      case PING_COMMAND.name.toLowerCase(): {
+        return new JsonResponse({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "Pong!",
+          },
+        });
+      }
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
     }

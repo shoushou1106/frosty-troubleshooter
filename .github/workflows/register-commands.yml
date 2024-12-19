@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Register
+    name: Register Commands
     strategy:
       matrix:
         node-version: [23.x]
@@ -20,4 +20,4 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: node src/register.ts
+    - run: node --experimental-strip-types src/register.ts

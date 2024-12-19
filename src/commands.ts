@@ -5,10 +5,12 @@
 
 export const PING_COMMAND = {
   name: 'ping',
-  description: 'Test the bot status'
+  description: 'Test the bot status',
+  dm_permission: false
 };
 
 export const TEMPLATE_COMMAND = {
   name: 'template',
-  description: 'PLACEHOLDER, Fill in a template easier'
+  description: 'PLACEHOLDER, Fill in a template easier',
+  dm_permission: false
 };

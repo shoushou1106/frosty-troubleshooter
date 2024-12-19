@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    name: Register Commands
     strategy:
       matrix:
         node-version: [23.x]

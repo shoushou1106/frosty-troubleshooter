@@ -25,7 +25,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Install packages
-      run: npm install -g node-fetch |
-           npm install -g dotenv
+      run: npm install
     - name: Register commands
       run: npx --yes tsx src/register.ts

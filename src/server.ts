@@ -24,7 +24,6 @@ class JsonResponse extends Response {
 }
 
 const router = AutoRouter();
-const together = new Together({ apiKey: process.env.TOGETHER_API_KEY });
 
 /**
  * A simple hello page to verify the worker is working.
@@ -75,7 +74,7 @@ router.post('/', async (request, env) => {
         );
         const userPrompt = promptOption?.value;
 
-        const aiResponse = await sendToAIProvider(userPrompt || "No input");
+        const aiResponse = await sendToAIProvider(env.TOGETHER_API_KEY, userPrompt || "No input");
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
@@ -113,7 +112,8 @@ const server = {
   fetch: router.fetch
 };
 
-async function sendToAIProvider(prompt: string): Promise<string> {
+async function sendToAIProvider(api_key: string, prompt: string): Promise<string> {
+  const together = new Together({ apiKey: api_key });
   const response = await together.chat.completions.create({
     model: "meta-llama/Llama-Vision-Free",
     messages: [{ role: "user", content: prompt }],

@@ -8,7 +8,8 @@ import {
   InteractionType,
   verifyKey
 } from 'discord-interactions';
-import { PING_COMMAND, TEMPLATE_COMMAND } from './commands';
+import Together from 'together-ai';
+import { CHAT_COMMAND, PING_COMMAND, TEMPLATE_COMMAND } from './commands';
 
 class JsonResponse extends Response {
   constructor(body: unknown, init?: ResponseInit) {
@@ -23,6 +24,7 @@ class JsonResponse extends Response {
 }
 
 const router = AutoRouter();
+const together = new Together();
 
 /**
  * A simple hello page to verify the worker is working.
@@ -67,6 +69,20 @@ router.post('/', async (request, env) => {
           },
         });
       }
+      case CHAT_COMMAND.name.toLowerCase(): {
+        const promptOption = interaction.data.options?.find(
+          (option: { name: string }) => option.name === "prompt"
+        );
+        const userPrompt = promptOption?.value;
+
+        const aiResponse = await sendToAIProvider(userPrompt || "No input");
+        return new JsonResponse({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: aiResponse
+          },
+        });
+      }
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
     }
@@ -97,4 +113,15 @@ const server = {
   fetch: router.fetch
 };
 
+async function sendToAIProvider(prompt: string): Promise<string> {
+  const response = await together.chat.completions.create({
+    model: "meta-llama/Llama-Vision-Free",
+    messages: [{ role: "user", content: prompt }],
+  });
+
+  if (response.choices && response.choices[0] && response.choices[0].message) {
+    return response.choices[0].message.content || "No response";
+  }
+  return "No response";
+}
 export default server;

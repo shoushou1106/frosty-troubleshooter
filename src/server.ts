@@ -24,7 +24,7 @@ class JsonResponse extends Response {
 }
 
 const router = AutoRouter();
-const together = new Together();
+const together = new Together({ apiKey: process.env.TOGETHER_API_KEY });
 
 /**
  * A simple hello page to verify the worker is working.

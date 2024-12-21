@@ -24,6 +24,14 @@ class JsonResponse extends Response {
   }
 }
 
+// Environment variables that is set in Cloudflare Workers
+interface Env {
+  DISCORD_APPLICATION_ID: string;
+  DISCORD_PUBLIC_KEY: string;
+  DISCORD_TOKEN: string;
+  TOGETHER_API_KEY: string;
+}
+
 const router = AutoRouter();
 
 /**
@@ -33,7 +41,7 @@ router.get('/', () => {
   return new Response(`Hello World`);
 });
 
-router.post('/', async (request, env) => {
+router.post('/', async (request, env: Env) => {
   const { isValid, interaction } = await server.verifyDiscordRequest(
     request,
     env,
@@ -77,7 +85,7 @@ router.post('/', async (request, env) => {
 
         // Send an initial response to answer the command
         const initialResponse = await fetch(
-          `https://discord.com/api/v10/interactions/${interaction.id}/${interaction.token}/callback`,
+          `https://discord.com/api/v10/interactions/${env.DISCORD_APPLICATION_ID}/${interaction.token}/callback`,
           {
             method: "POST",
             headers: {
@@ -99,7 +107,7 @@ router.post('/', async (request, env) => {
         }
 
         // Stream the AI response and update the message
-        await streamFromAI(interaction, userPrompt, env.TOGETHER_API_KEY);
+        await streamFromAI(interaction, userPrompt, env);
 
         return null;
       }
@@ -113,7 +121,7 @@ router.post('/', async (request, env) => {
 });
 router.all('*', () => new Response('Not Found.', { status: 404 }));
 
-async function verifyDiscordRequest(request: Request, env: { DISCORD_PUBLIC_KEY: string }) {
+async function verifyDiscordRequest(request: Request, env: Env) {
   const signature = request.headers.get('x-signature-ed25519');
   const timestamp = request.headers.get('x-signature-timestamp');
   const body = await request.text();
@@ -133,7 +141,7 @@ const server = {
   fetch: router.fetch
 };
 
-async function streamFromAI(interaction: APIInteraction, api_key: string, prompt: string): Promise<void> {
+async function streamFromAI(interaction: APIInteraction, prompt: string, env: Env): Promise<void> {
   // const together = new Together({ apiKey: api_key });
   // const response = await together.chat.completions.create({
   //   model: "meta-llama/Llama-Vision-Free",
@@ -146,7 +154,7 @@ async function streamFromAI(interaction: APIInteraction, api_key: string, prompt
   // return "No response";
 
   try {
-    const together = new Together({ apiKey: api_key });
+    const together = new Together({ apiKey: env.TOGETHER_API_KEY });
 
     const stream = await together.chat.completions.create({
       model: "meta-llama/Llama-Vision-Free",
@@ -161,7 +169,7 @@ async function streamFromAI(interaction: APIInteraction, api_key: string, prompt
 
       // Update the message with the current AI response
       await fetch(
-        `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
+        `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
         {
           method: "PATCH",
           headers: {
@@ -174,7 +182,7 @@ async function streamFromAI(interaction: APIInteraction, api_key: string, prompt
       );
     }
     await fetch(
-      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
+      `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
       {
         method: "PATCH",
         headers: {
@@ -190,7 +198,7 @@ async function streamFromAI(interaction: APIInteraction, api_key: string, prompt
 
     // Handle errors by updating the message
     await fetch(
-      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
+      `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
       {
         method: "PATCH",
         headers: {

@@ -106,9 +106,9 @@ router.post('/', async (request, env: Env) => {
         }
 
         await fetch(
-          `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
+          `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}`,
           {
-            method: "PATCH",
+            method: 'POST',
             headers: {
               "Content-Type": "application/json",
             },

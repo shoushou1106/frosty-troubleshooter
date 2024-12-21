@@ -105,23 +105,10 @@ router.post('/', async (request, env: Env) => {
           );
         }
 
-        await fetch(
-          `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}`,
-          {
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              content: 'Hi',
-            }),
-          }
-        );
-        return new Response();
-
         // Stream the AI response and update the message
         await streamFromAI(interaction, userPrompt, env);
 
+        return new Response();
       }
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
@@ -167,7 +154,7 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
 
 
 
-  /*try {
+  try {
     const together = new Together({ apiKey: env.TOGETHER_API_KEY });
 
     const stream = await together.chat.completions.create({
@@ -183,7 +170,7 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
 
       // Update the message with the current AI response
       await fetch(
-        `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
+        `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
         {
           method: "PATCH",
           headers: {
@@ -196,7 +183,7 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
       );
     }
     await fetch(
-      `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
+      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
       {
         method: "PATCH",
         headers: {
@@ -212,7 +199,7 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
 
     // Handle errors by updating the message
     await fetch(
-      `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
+      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
       {
         method: "PATCH",
         headers: {
@@ -223,6 +210,6 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
         }),
       }
     );
-  }*/
+  }
 }
 export default server;

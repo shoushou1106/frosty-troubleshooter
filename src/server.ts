@@ -105,10 +105,7 @@ router.post('/', async (request, env: Env) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              type: 3,
-              data: {
-                content: "test update",
-              },
+              content: "test update",
             }),
           }
         );

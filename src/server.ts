@@ -85,7 +85,7 @@ router.post('/', async (request, env: Env) => {
 
         // Send an initial response to answer the command
         const initialResponse = await fetch(
-          `https://discord.com/api/v10/interactions/${env.DISCORD_APPLICATION_ID}/${interaction.token}/callback`,
+          `https://discord.com/api/v10/interactions/${interaction.id}/${interaction.token}/callback`,
           {
             method: "POST",
             headers: {

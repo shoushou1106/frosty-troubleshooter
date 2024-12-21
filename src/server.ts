@@ -105,10 +105,23 @@ router.post('/', async (request, env: Env) => {
           );
         }
 
+        await fetch(
+          `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              content: 'Hi',
+            }),
+          }
+        );
+        return new Response();
+
         // Stream the AI response and update the message
         await streamFromAI(interaction, userPrompt, env);
 
-        return new Response();
       }
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
@@ -152,18 +165,7 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
   // }
   // return "No response";
 
-  await fetch(
-    `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content: 'Hi',
-      }),
-    }
-  );
+
 
   /*try {
     const together = new Together({ apiKey: env.TOGETHER_API_KEY });

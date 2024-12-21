@@ -100,7 +100,7 @@ router.post('/', async (request, env: Env) => {
           }
         );
 
-        await fetch(
+        const justatestidk = await fetch(
           `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}`,
           {
             method: "POST",

@@ -37,8 +37,8 @@ const router = AutoRouter();
 /**
  * A simple hello page to verify the worker is working.
  */
-router.get('/', () => {
-  return new Response(`Hello World`);
+router.get('/', (request, env: Env) => {
+  return new Response(`Hello World, ${env.DISCORD_APPLICATION_ID}`);
 });
 
 router.post('/', async (request, env: Env) => {
@@ -170,7 +170,7 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
 
       // Update the message with the current AI response
       await fetch(
-        `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}`,
+        `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}`,
         {
           method: "POST",
           headers: {
@@ -183,7 +183,7 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
       );
     }
     await fetch(
-      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}`,
+      `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}`,
       {
         method: "POST",
         headers: {
@@ -199,7 +199,7 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
 
     // Handle errors by updating the message
     await fetch(
-      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}`,
+      `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}`,
       {
         method: "POST",
         headers: {

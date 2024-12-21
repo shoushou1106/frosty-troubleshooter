@@ -100,6 +100,22 @@ router.post('/', async (request, env: Env) => {
           }
         );
 
+        await fetch(
+          `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              type: InteractionResponseType.DEFERRED_UPDATE_MESSAGE,
+              data: {
+                content: "test update",
+              },
+            }),
+          }
+        );
+
         if (!initialResponse.ok) {
           console.error("Failed to send initial response:", initialResponse.statusText);
           return new JsonResponse(

@@ -92,10 +92,7 @@ router.post('/', async (request, env: Env) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-              data: {
-                content: "init test",
-              },
+              type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
             }),
           }
         );
@@ -108,7 +105,7 @@ router.post('/', async (request, env: Env) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              type: InteractionResponseType.DEFERRED_UPDATE_MESSAGE,
+              type: InteractionResponseType.UPDATE_MESSAGE,
               data: {
                 content: "test update",
               },

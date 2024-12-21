@@ -170,9 +170,9 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
 
       // Update the message with the current AI response
       await fetch(
-        `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
+        `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}`,
         {
-          method: "PATCH",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -183,9 +183,9 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
       );
     }
     await fetch(
-      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
+      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}`,
       {
-        method: "PATCH",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -199,9 +199,9 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
 
     // Handle errors by updating the message
     await fetch(
-      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
+      `https://discord.com/api/v10/webhooks/${interaction.application_id}/${interaction.token}`,
       {
-        method: "PATCH",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },

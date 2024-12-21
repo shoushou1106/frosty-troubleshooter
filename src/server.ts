@@ -92,8 +92,7 @@ router.post('/', async (request, env: Env) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-              content: "*Waiting...*"
+              type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE
             }),
           }
         );
@@ -153,7 +152,20 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
   // }
   // return "No response";
 
-  try {
+  await fetch(
+    `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: 'Hi',
+      }),
+    }
+  );
+
+  /*try {
     const together = new Together({ apiKey: env.TOGETHER_API_KEY });
 
     const stream = await together.chat.completions.create({
@@ -209,7 +221,6 @@ async function streamFromAI(interaction: APIInteraction, prompt: string, env: En
         }),
       }
     );
-  }
-  return;
+  }*/
 }
 export default server;

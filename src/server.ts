@@ -92,7 +92,7 @@ router.post('/', async (request, env: Env) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
+              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
               content: "*Waiting...*"
             }),
           }
@@ -109,7 +109,7 @@ router.post('/', async (request, env: Env) => {
         // Stream the AI response and update the message
         await streamFromAI(interaction, userPrompt, env);
 
-        return null;
+        return new Response();
       }
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });

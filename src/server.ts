@@ -37,8 +37,8 @@ const router = AutoRouter();
 /**
  * A simple hello page to verify the worker is working.
  */
-router.get('/', (request, env: Env) => {
-  return new Response(`Hello World, ${env.DISCORD_APPLICATION_ID}`);
+router.get('/', () => {
+  return new Response(`Hello World`);
 });
 
 router.post('/', async (request, env: Env) => {
@@ -92,7 +92,10 @@ router.post('/', async (request, env: Env) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE
+              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+              data: {
+                content: "init test",
+              },
             }),
           }
         );

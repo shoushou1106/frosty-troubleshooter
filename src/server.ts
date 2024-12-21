@@ -98,20 +98,21 @@ router.post('/', async (request, env: Env) => {
         );
 
         const justatestidk = await fetch(
-          `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}`,
+          `https://discord.com/api/v10/webhooks/${env.DISCORD_APPLICATION_ID}/${interaction.token}/messages/@original`,
           {
-            method: "POST",
+            method: "PATCH",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              type: InteractionResponseType.UPDATE_MESSAGE,
+              type: 3,
               data: {
                 content: "test update",
               },
             }),
           }
         );
+        console.error(justatestidk.statusText);
 
         if (!initialResponse.ok) {
           console.error("Failed to send initial response:", initialResponse.statusText);

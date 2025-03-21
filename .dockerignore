@@ -1,0 +1,8 @@
+# Ignore
+*
+
+# Allow
+!/commands.ts
+!/deno.json
+!/deno.lock
+!/main.ts

@@ -1,0 +1,22 @@
+name: Register Commands
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    name: Register Commands
+    env:
+      DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Register commands
+        run: "deno run --allow-net --allow-env register.ts"

@@ -1,6 +1,4 @@
-/**
- * Share command metadata from a common spot to be used for both runtime and registration.
- */
+// Command metadata
 
 export const PING_COMMAND = {
   name: 'ping',
@@ -27,3 +25,11 @@ export const CHAT_COMMAND = {
     },
   ],
 };
+
+export const IDK_COMMAND = {
+  name: 'idk',
+  description: 'test',
+  dm_permission: false
+};
+
+export const CommandList = [PING_COMMAND, TEMPLATE_COMMAND, CHAT_COMMAND, IDK_COMMAND];
